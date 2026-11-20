@@ -35,6 +35,10 @@ jobs:
           cp index.html _site/index.html
           if [ -d assets ]; then cp -R assets _site/assets; fi
           if [ -d facilities ]; then cp -R facilities _site/facilities; fi
+          if [ -d legislation ]; then cp -R legislation _site/legislation; fi
+          test -s _site/legislation/index.html
+          test -s _site/legislation/bill.html
+          test -s _site/legislation/data/bills.json
 
       - name: Download approved Policy Library archive from release
         env:
