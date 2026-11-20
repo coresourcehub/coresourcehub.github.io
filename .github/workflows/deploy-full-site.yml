@@ -1,0 +1,75 @@
+name: Deploy complete CO Resource Hub site
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: "GitHub Release tag containing the Policy Library ZIP"
+        required: true
+        default: "library-beta-v1"
+        type: string
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the homepage
+        uses: actions/checkout@v4
+
+      - name: Create deployment site
+        run: |
+          set -euo pipefail
+          mkdir -p _site/policy-library
+          cp index.html _site/index.html
+          if [ -d assets ]; then cp -R assets _site/assets; fi
+
+      - name: Download approved Policy Library archive from release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        run: |
+          set -euo pipefail
+          gh release download "$RELEASE_TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --pattern 'CDOC_Policy_Library_All_Series_Research_Beta.zip' \
+            --dir /tmp/cdoc-policy-archive
+          test -s /tmp/cdoc-policy-archive/CDOC_Policy_Library_All_Series_Research_Beta.zip
+
+      - name: Extract policy library, preserve source PDFs and form previews
+        run: |
+          set -euo pipefail
+          unzip -q /tmp/cdoc-policy-archive/CDOC_Policy_Library_All_Series_Research_Beta.zip -d _site/policy-library
+          test -s _site/policy-library/index.html
+          test -s _site/policy-library/assets/library.json
+          test -d _site/policy-library/pdfs
+          test -d _site/policy-library/previews
+          rm -f _site/policy-library/partial_records.json
+          touch _site/.nojekyll
+          printf 'Policy PDFs: '
+          find _site/policy-library/pdfs -type f -name '*.pdf' | wc -l
+          printf 'Preview images: '
+          find _site/policy-library/previews -type f | wc -l
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload assembled website
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Publish to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
