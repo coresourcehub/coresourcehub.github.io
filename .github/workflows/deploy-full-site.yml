@@ -68,6 +68,9 @@ jobs:
           set -euo pipefail
           python3 scripts/add-library-navigation.py
 
+      - name: Add consistent navigation to Policy Library pages
+        run: python3 scripts/add_policy_navigation.py
+
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
