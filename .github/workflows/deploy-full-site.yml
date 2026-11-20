@@ -97,7 +97,7 @@ jobs:
                   if item not in contents:
                       raise SystemExit(f'Missing illustration: {item}')
                   payload=archive.read(item)
-                  if not payload.startswith(b'\\x89PNG\\r\\n\\x1a\\n'):
+                  if not payload.startswith(b'\x89PNG\r\n\x1a\n'):
                       raise SystemExit(f'Unexpected image format: {item}')
                   (out/f'{name}.png').write_bytes(payload)
           print(f'Installed {len(names)} transparent homepage illustrations')
