@@ -71,6 +71,38 @@ jobs:
       - name: Add consistent navigation to Policy Library pages
         run: python3 scripts/add_policy_navigation.py
 
+      - name: Add seven uploaded illustrated card artworks
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/co-home-art _site/assets/home-art
+          gh release download "$RELEASE_TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --pattern 'homepage_illustrations_seven*.zip' \
+            --dir /tmp/co-home-art
+          python3 - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile
+          archives=list(Path('/tmp/co-home-art').glob('homepage_illustrations_seven*.zip'))
+          if len(archives)!=1:
+              raise SystemExit(f'Expected one homepage illustrations ZIP in release; found {len(archives)}')
+          names=('policy-library','share-experience','legislation-reform','research-findings','facilities-directory','organizations-resources','purpose-independence')
+          out=Path('_site/assets/home-art')
+          with ZipFile(archives[0]) as archive:
+              contents=set(archive.namelist())
+              for name in names:
+                  item=f'{name}-transparent.png'
+                  if item not in contents:
+                      raise SystemExit(f'Missing illustration: {item}')
+                  payload=archive.read(item)
+                  if not payload.startswith(b'\\x89PNG\\r\\n\\x1a\\n'):
+                      raise SystemExit(f'Unexpected image format: {item}')
+                  (out/f'{name}.png').write_bytes(payload)
+          print(f'Installed {len(names)} transparent homepage illustrations')
+          PY
+
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
