@@ -63,6 +63,11 @@ jobs:
           printf 'Preview images: '
           find _site/policy-library/previews -type f | wc -l
 
+      - name: Add consistent homepage navigation to Policy Library
+        run: |
+          set -euo pipefail
+          python3 scripts/add-library-navigation.py
+
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
