@@ -17,7 +17,7 @@ for page in root.rglob("*.html"):
     text = page.read_text(encoding="utf-8")
     if marker in text:
         continue
-    result, n = re.subn(r"(<body\\b[^>]*>)", lambda match: match.group(1) + "\n" + nav + "\n", text, count=1, flags=re.I)
+    result, n = re.subn(r"(<body\b[^>]*>)", lambda match: match.group(1) + "\n" + nav + "\n", text, count=1, flags=re.I)
     if not n:
         print("No body tag; skipping:", page)
         continue
