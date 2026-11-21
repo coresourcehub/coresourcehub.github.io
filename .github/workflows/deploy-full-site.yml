@@ -27,6 +27,8 @@ jobs:
     steps:
       - name: Check out the homepage
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Validate litigation source data and related proceedings
         run: |
@@ -48,6 +50,30 @@ jobs:
           test -s _site/legislation/index.html
           test -s _site/legislation/bill.html
           test -s _site/legislation/data/bills.json
+
+      - name: Write litigation-only last update metadata
+        run: |
+          set -euo pipefail
+          LAST_EDIT="$(git log -1 --format=%cI -- litigation/cases.csv litigation/relationships.json litigation/leadership.json litigation/index.html litigation/case.html)"
+          if [ -z "$LAST_EDIT" ]; then
+            echo "No litigation change timestamp found" >&2
+            exit 1
+          fi
+          LAST_EDIT="$LAST_EDIT" python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          from datetime import datetime
+          stamp=os.environ["LAST_EDIT"]
+          datetime.fromisoformat(stamp)
+          path=Path("_site/litigation/updated.json")
+          path.write_text(json.dumps({
+              "last_archive_commit_at":stamp,
+              "meaning":"Latest committed change to litigation cases, relationships, leadership, or archive pages; not a live court-record update."
+          },indent=2)+"\\n", encoding="utf-8")
+          print("Litigation archive last edited:",stamp)
+          PY
+          test -s _site/litigation/updated.json
 
       - name: Download approved Policy Library archive from release
         env:
