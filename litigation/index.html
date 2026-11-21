@@ -79,7 +79,7 @@ function detailUrl(r){return './case.html?docket='+encodeURIComponent(field(r,'D
 function renderCard(r){const card=el('article',undefined,'case');const h=el('h2',undefined,'name'),title=el('a',field(r,'Case title')||'Untitled case');title.href=detailUrl(r);h.append(title);card.append(h);
 meta(card,[field(r,'Docket / case number'),field(r,'Court'),field(r,'Filing year (verify)')]);
 const summary=field(r,'Preliminary summary / source-verified event');card.append(el('p',summary||'Summary pending review.','summary'));
-const keywords=field(r,'Preliminary keywords').split(';').map(s=>s.trim()).filter(Boolean);if(keywords.length){const chips=el('div',undefined,'chips');keywords.forEach(k=>chips.append(el('span',k,'chip')));card.append(chips)}
+const keywords=field(r,'Preliminary keywords').split(';').map(s=>s.trim()).filter(Boolean);if(keywords.length){card.append(el('p','Research topics (not judicial findings):','subtle'));const chips=el('div',undefined,'chips');keywords.forEach(k=>chips.append(el('span',k,'chip')));card.append(chips)}
 const people=field(r,'Named persons / entities (search index)');if(people)card.append(el('p','Names currently indexed (not necessarily every party or official): '+people,'subtle'));
 
 const stage=field(r,'Review stage');if(stage){card.append(el('span','Review: '+stage,'status'))};const level=field(r,'Summary evidence level');if(level)card.append(el('p','Evidence basis: '+level,'subtle'));
