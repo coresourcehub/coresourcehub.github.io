@@ -1,0 +1,52 @@
+{
+  "verified_as_of": "2026-11-21",
+  "entries": [
+    {
+      "id": "dean-williams",
+      "name": "Dean Williams",
+      "role": "Executive Director",
+      "start": "2019-01-08",
+      "end": "2022-12-02",
+      "display_dates": "January 8, 2019 – December 2, 2022",
+      "description": "Appointed by Governor Jared Polis. Announced his resignation November 9, 2022, effective December 2.",
+      "source_urls": [
+        "https://gazette.com/2022/11/09/dean-williams-resigns-as-executive-director-of-colorados-department-of-corrections-d49aed32-608f-11ed-b65b-0f569c085ff1/",
+        "https://www.denvergazette.com/2022/11/20/dean-williams-lightning-rod-for-normalization-in-corrections-ends-four-year-tenure/"
+      ],
+      "portrait_source": "https://www.cpr.org/show-segment/colorados-prison-chief-and-previously-incarcerated-man-share-stories-empathy/",
+      "portrait_credit": "Hart Van Denburg / Colorado Public Radio",
+      "portrait_reuse_status": "Permission or reusable license not established; link only"
+    },
+    {
+      "id": "andre-stancil-interim",
+      "name": "Moses “Andre” Stancil",
+      "role": "Interim Executive Director",
+      "start": "2022-12-02",
+      "end": "2023-01-31",
+      "display_dates": "December 2022 – January 31, 2023",
+      "description": "Selected for the interim position November 28, 2022, during Dean Williams's departure. Previously served in senior CDOC prison operations leadership.",
+      "source_urls": [
+        "https://www.denvergazette.com/2022/11/28/moses-andre-stancil-named-interim-head-of-colorado-department-of-corrections-57e377ce-ab36-5803-bad0-1c5d0ed40c83/"
+      ],
+      "portrait_source": "https://digitalmag.theceomagazine.com/andre-stancil/",
+      "portrait_credit": "The CEO Magazine",
+      "portrait_reuse_status": "Permission or reusable license not established; link only"
+    },
+    {
+      "id": "andre-stancil-permanent",
+      "name": "Moses “Andre” Stancil",
+      "role": "Executive Director",
+      "start": "2023-01-31",
+      "end": null,
+      "display_dates": "January 31, 2023 – present (verified November 2026)",
+      "description": "Appointed by Governor Jared Polis on January 31, 2023. Served in senior CDOC prison operations leadership beginning in 2019.",
+      "source_urls": [
+        "https://www.denvergazette.com/2023/01/31/polis-appoints-moses-andre-stancil-as-department-of-corrections-chief-d96ac85c-61ac-5060-af2e-62598de2d5cc/",
+        "https://www.correctionalleaders.com/andre-stancil"
+      ],
+      "portrait_source": "https://digitalmag.theceomagazine.com/andre-stancil/",
+      "portrait_credit": "The CEO Magazine",
+      "portrait_reuse_status": "Permission or reusable license not established; link only"
+    }
+  ]
+}
