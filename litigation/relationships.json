@@ -1,0 +1,105 @@
+{
+  "version": "2026-11-21",
+  "method": "Court-and-docket record relationships. Only source-confirmed connections are marked confirmed; sharing a person or defendant does not establish a related case.",
+  "confirmed_groups": [
+    {
+      "id": "boles-2019-1158",
+      "label": "Boles v. Colorado Department of Corrections",
+      "type": "district_case_and_appeal",
+      "records": [
+        {
+          "docket": "1:19-cv-01158",
+          "court_hint": "U.S. District Court",
+          "role": "Originating district-court action"
+        },
+        {
+          "docket": "24-1444",
+          "court_hint": "U.S. Court of Appeals",
+          "role": "Tenth Circuit appeal"
+        }
+      ],
+      "evidence": "Tenth Circuit opinion 24-1444 explicitly cites originating district docket 1:19-cv-01158.",
+      "sources": [
+        "https://www.ca10.uscourts.gov/opinion/24-1444",
+        "https://law.justia.com/cases/federal/appellate-courts/ca10/24-1444/24-1444-2025-09-18.html"
+      ]
+    }
+  ],
+  "external_proceedings": [
+    {
+      "primary_docket": "1:19-cv-01158",
+      "related_docket": "22-1086",
+      "type": "Earlier federal appeal",
+      "status": "confirmed",
+      "note": "An earlier Tenth Circuit appeal from the same district-court action; not a separate indexed record.",
+      "source": "https://www.ca10.uscourts.gov/opinion/22-1086"
+    },
+    {
+      "primary_docket": "1:19-cv-01158",
+      "related_docket": "19-1314",
+      "type": "Earlier federal appeal",
+      "status": "confirmed",
+      "note": "An earlier Tenth Circuit appeal identifies the same originating district-court docket; not separately indexed.",
+      "source": "https://www.ca10.uscourts.gov/opinion/19-1314"
+    },
+    {
+      "primary_docket": "1:21-cv-02125",
+      "related_docket": "22-1371",
+      "type": "Federal appeal",
+      "status": "confirmed",
+      "note": "Tenth Circuit appellate decision explicitly identifies district action 1:21-cv-02125.",
+      "source": "https://www.ca10.uscourts.gov/opinion/22-1371"
+    },
+    {
+      "primary_docket": "1:22-cv-02008",
+      "related_docket": "22-1441",
+      "type": "Federal appeal",
+      "status": "confirmed",
+      "note": "Tenth Circuit appellate decision explicitly identifies district action 1:22-cv-02008.",
+      "source": "https://www.ca10.uscourts.gov/opinion/22-1441"
+    },
+    {
+      "primary_docket": "1:20-cv-02643",
+      "related_docket": "2020CV31723",
+      "type": "Colorado state-court origin / federal removal",
+      "status": "confirmed",
+      "note": "Federal docket states removal from Denver District Court case 2020CV31723.",
+      "source": "https://dockets.justia.com/docket/colorado/codce/1%3A2020cv02643/200350"
+    },
+    {
+      "primary_docket": "1:20-cv-00768",
+      "related_docket": "State-court case number not yet confirmed",
+      "type": "State-to-federal removal",
+      "status": "confirmed_origin_only",
+      "note": "Federal docket includes a notice of removal; the origin state docket identifier has not been verified.",
+      "source": "https://dockets.justia.com/docket/colorado/codce/1%3A2020cv00768/196442"
+    }
+  ],
+  "review_watchlist": [
+    {
+      "dockets": [
+        "1:20-cv-00821",
+        "1:21-cv-00252"
+      ],
+      "reason": "Both have Crow v. CDOC titles; different dockets and years, but no original-case/appeal connection established.",
+      "status": "not_confirmed"
+    },
+    {
+      "dockets": [
+        "1:23-cv-01625",
+        "1:26-cv-01775",
+        "25CA1416"
+      ],
+      "reason": "Eaves appears in multiple filings and courts; do not assume identical claims or common underlying proceedings without the originating case citations.",
+      "status": "not_confirmed"
+    },
+    {
+      "dockets": [
+        "1:21-cv-01684",
+        "1:26-cv-02858"
+      ],
+      "reason": "Vreeland appears in two federal district-court records; shared litigant alone does not make them one dispute.",
+      "status": "not_confirmed"
+    }
+  ]
+}
