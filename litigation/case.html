@@ -28,6 +28,31 @@ const tags=n('div',undefined,'topics');for(const k of get(r,'Preliminary keyword
 addSection('Names currently indexed (not exhaustive)',get(r,'Named persons / entities (search index)'));
 addSection('Research / linking notes',get(r,'Research / linking notes'));
 addSection('Source document type',get(r,'Source document type'));
+const relPanel=n('section',undefined,'section');relPanel.append(n('h2','Related court proceedings'));
+try{
+const rr=await fetch('./relationships.json',{cache:'no-store'});
+if(!rr.ok)throw Error('relationship index unavailable');
+const rel=await rr.json(),d=get(r,'Docket / case number');
+const groups=(rel.confirmed_groups||[]).filter(g=>g.records.some(v=>v.docket===d));
+const others=(rel.external_proceedings||[]).filter(v=>v.primary_docket===d);
+if(groups.length===0&&others.length===0){
+ relPanel.append(n('p','No relationship to another indexed court record has been confirmed for this docket. This does not mean the case has no appeals, removals, or related filings.','muted'));
+}else{
+for(const group of groups){
+ relPanel.append(n('p','Confirmed: '+group.label+' — '+group.type.replaceAll('_',' ')+'.'));
+ for(const item of group.records.filter(v=>v.docket!==d)){
+ const other=rows.find(v=>get(v,'Docket / case number')===item.docket);
+ if(other){const a=n('a','Related archive record: '+item.docket+' ('+item.role+')','link');a.href='./case.html?docket='+encodeURIComponent(item.docket)+'&court='+encodeURIComponent(get(other,'Court'));relPanel.append(a)}
+}
+for(const u of group.sources||[]){const a=n('a','Court source confirming docket link ↗','link');a.href=u;a.target='_blank';a.rel='noopener noreferrer';relPanel.append(a)}
+}
+for(const item of others){
+ relPanel.append(n('p',item.type+': '+item.related_docket+'. '+item.note,'muted'));
+ if(safeLink(item.source)){const a=n('a','Court source for related proceeding ↗','link');a.href=item.source;a.target='_blank';a.rel='noopener noreferrer';relPanel.append(a)}
+}
+}
+}catch(e){relPanel.append(n('p','Related-proceedings metadata currently unavailable.','muted'))}
+target.append(relPanel);
 const sources=n('section',undefined,'section');sources.append(n('h2','Public court sources'));const url=safeLink(get(r,'Public source URL'));if(url){const link=n('a','Open original source ↗','link');link.href=url;link.target='_blank';link.rel='noopener noreferrer';sources.append(link)}else sources.append(n('p','No verified HTTPS source URL in the current CSV.'));sources.append(n('p','This record is generated from the supplied CSV. The named-person list may omit parties, staff, officials and others until underlying filings are reviewed. This is not a complete case analysis or an automatically refreshed docket.','muted'));target.append(sources);
 }catch(err){target.replaceChildren(n('h1','Unable to load case'),n('p',err.message,'sub'))}})();
 </script></body></html>
