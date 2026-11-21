@@ -39,3 +39,13 @@ Do not treat a keyword like “Civil rights”, “Medical care”, “Disabilit
 - CSV search matches all fields; the user interface filters on court level and filing year and paginates in groups of ten. Larger imports may eventually warrant a server-side index.
 
 The uploaded ZIP widget was used as the presentation starting point, then integrated into existing CO Resource Hub navigation and style. Original court links are maintained from CSV.
+
+## Browse-by-topic interface (November 2026)
+
+- The searchable litigation page offers **featured research topic buttons with case counts** and an expandable set of **all indexed CSV keywords**.
+- Featured topics use a short, editable list of **exact keyword aliases** in `litigation/index.html`; they do **not** infer issues by scanning arbitrary summaries. For example, ADA / disability can group `ADA`, `ADA accommodation`, `Disability rights`, and `Wheelchair access` when those explicit keywords appear in a case.
+- Each number counts **distinct case records tagged with the topic**, not keyword appearances, proven claims, or findings. The full keyword list counts distinct case records per exact phrase; semantically similar phrases may have different counts.
+- The selected topic is combined with free-text search, court level and filing year as an **AND filter**. Clicking the active topic again, or the Clear topic control, removes the topic filter.
+- Keyword chips on individual case cards are interactive and apply an exact keyword filter. The original text-based case search, year graph, source links and pagination remain available.
+- Counts are **calculated in the visitor's browser directly from `cases.csv` on each load**, so replacing the reviewed CSV and redeploying updates them. Topic alias mappings may need manual review when new terms are introduced.
+- All tags are labeled as **research topics, not judicial findings**. A medical or civil rights keyword is not evidence that a violation was legally established.
