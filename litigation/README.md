@@ -21,6 +21,15 @@ This archive uses the initial 47-record `litigation/cases.csv` supplied by the p
 - Keep immutable source snapshots privately or where permitted; publish only appropriate public-record extracts.
 - The current static widget **does not perform API calls, scheduling, automatic court monitoring, or auto-publication**.
 
+## Keyword enrichment and confidence
+
+On November 20, 2026, the 47-case dataset's preliminary keyword column was expanded. For most cases, additions are descriptive indexing terms from the *existing CSV summaries and docket metadata* (for example, amended complaints, named defendants, and pending pleading review); they are **not independently verified substantive violations**. Two cases received additional source checks:
+
+- **Turley v. Warden, Sterling Correctional Facility et al**, 1:26-cv-00341: [published federal docket and May 15, 2026 order](https://dockets.justia.com/docket/colorado/codce/1:2026cv00341/251088), identifying deliberate-indifference and ADA-accommodation *claims*, and partial dismissal/surviving claims; not a final liability determination.
+- **Boles v. CDOC et al**, appeal 24-1444: [September 18, 2025 Tenth Circuit opinion](https://law.justia.com/cases/federal/appellate-courts/ca10/24-1444/24-1444-2025-09-18.html), identifying ADA/wheelchair access, exhaustion, kosher diet, RLUIPA, First Amendment and other issues; specific outcomes require attention to each distinct claim.
+
+Do not treat a keyword like “Civil rights”, “Medical care”, “Disability rights”, or “Eighth Amendment claim” as a court finding that rights were violated. A keyword may mean an allegation, type of lawsuit, legal theory, procedural context, or source-verified topic. Further pleadings/opinions review is necessary before adding detailed substantive tags to other docket-only cases.
+
 ## Known limitations
 
 - Research beta, not an exhaustive 2019–2026 census of correctional litigation.
