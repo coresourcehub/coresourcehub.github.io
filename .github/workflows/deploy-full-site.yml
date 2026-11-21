@@ -36,6 +36,10 @@ jobs:
           if [ -d assets ]; then cp -R assets _site/assets; fi
           if [ -d facilities ]; then cp -R facilities _site/facilities; fi
           if [ -d legislation ]; then cp -R legislation _site/legislation; fi
+          if [ -d litigation ]; then cp -R litigation _site/litigation; fi
+          test -s _site/litigation/index.html
+          test -s _site/litigation/case.html
+          test -s _site/litigation/cases.csv
           test -s _site/legislation/index.html
           test -s _site/legislation/bill.html
           test -s _site/legislation/data/bills.json
