@@ -27,7 +27,7 @@ a{color:var(--blue);text-underline-offset:2px}a:focus-visible,button:focus-visib
 <div class="metric"><strong id="stat-sources">—</strong><span>Records with source links</span></div>
 </section>
 <section class="related-summary" aria-label="Litigation records and related proceedings">
-<h2>75 docket records ≠ 75 independent lawsuits</h2>
+<h2><span id="related-indexed-total">—</span> indexed court records ≠ that many independent lawsuits</h2>
 <p>We preserve each court record separately, but appeals, removals, and other proceedings may arise from the same underlying dispute. Cases are linked only when an identifiable court source supports the relationship.</p>
 <div id="related-count">Reviewing court relationships…</div>
 <details><summary>View confirmed linked records and proceedings</summary><div id="related-list"></div><p class="related-text">Other records may also be connected; we haven't confirmed their relationships. Shared litigants, staff, or similar case names do not prove two records concern the same dispute.</p></details>
@@ -73,7 +73,7 @@ target.style.gridTemplateColumns='repeat('+Math.max(years.length,1)+',minmax(0,1
 for(const year of years){
 const count=counts[year];
 const b=el('button',undefined,'bar');b.type='button';
-b.setAttribute('aria-label',year+': '+count+' indexed case'+(count===1?'':'s')+'. Filter by this year');
+b.setAttribute('aria-label',year+': '+count+' indexed court record'+(count===1?'':'s')+'. Filter by this year');
 b.setAttribute('aria-pressed',String($('year').value===year));
 const val=el('span',String(count),'bar-value');
 const fill=el('span',undefined,'bar-fill');fill.style.height=Math.max(4,Math.round(116*count/max))+'px';fill.setAttribute('aria-hidden','true');
@@ -168,7 +168,7 @@ function renderRelationships(){
  const groups=relationshipIndex.confirmed_groups||[];
  const pairs=groups.filter(g=>g.records?.every(x=>localByDocket(x.docket)));
  const duplicateEntries=pairs.reduce((n,g)=>n+Math.max(0,g.records.length-1),0);
- $('related-count').textContent=pairs.length+' confirmed in-archive linked group'+(pairs.length===1?'':'s')+' · '+duplicateEntries+' additional docket record'+(duplicateEntries===1?'':'s')+' in those group(s) · '+(relationshipIndex.external_proceedings||[]).length+' referenced proceedings outside the 75-record index. No total of unique underlying disputes has yet been established.';
+ $('related-count').textContent=pairs.length+' confirmed in-archive linked group'+(pairs.length===1?'':'s')+' · '+duplicateEntries+' additional docket record'+(duplicateEntries===1?'':'s')+' in those group(s) · '+(relationshipIndex.external_proceedings||[]).length+' referenced proceedings outside the '+state.rows.length+'-record index. No total of unique underlying disputes has yet been established.';
  const container=$('related-list');container.replaceChildren();
  for(const group of groups){
   const p=el('p',undefined,'related-text');p.append(el('strong',group.label+': '));
@@ -209,5 +209,5 @@ function render(){const rows=state.filtered,total=rows.length,start=state.page*s
 function fillSelect(id,values){const select=$(id);[...new Set(values.filter(v=>Boolean(v)&&!(id==='court'&&v==='Attorney identified')))].sort((a,b)=>id==='year'?b.localeCompare(a):a.localeCompare(b)).forEach(v=>{const o=el('option',v);o.value=v;select.append(o)})}
 $('search').addEventListener('input',()=>{$('alias-research-note').hidden=!/goudry|guidry/i.test($('search').value);update()});$('include-historical').addEventListener('change',()=>{if(!$('include-historical').checked&&Number($('year').value)<2019)$('year').value='';update()});$('court').addEventListener('change',update);$('year').addEventListener('change',()=>{if($('year').value&&Number($('year').value)<2019)$('include-historical').checked=true;update()});
 $('prev').addEventListener('click',()=>{if(state.page>0){state.page--;render()}});$('next').addEventListener('click',()=>{if((state.page+1)*state.perPage<state.filtered.length){state.page++;render()}});
-fetch('./cases.csv',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('HTTP '+r.status);return r.text()}).then(csv=>{state.rows=parseCSV(csv);loadRelationships();$('historical-count').textContent=state.rows.filter(r=>Number(field(r,'Filing year (verify)'))<2019).length;fillSelect('court',state.rows.map(r=>field(r,'Court level')));fillSelect('year',state.rows.map(r=>field(r,'Filing year (verify)')));update()}).catch(e=>{$('count').textContent='Could not load cases.';$('results').append(el('p','Upload index.html and cases.csv to the same hosted website folder. Opening the HTML directly from your computer may block CSV loading. Details: '+e.message,'error'))});
+fetch('./cases.csv',{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('HTTP '+r.status);return r.text()}).then(csv=>{state.rows=parseCSV(csv);$('related-indexed-total').textContent=state.rows.length;loadRelationships();$('historical-count').textContent=state.rows.filter(r=>Number(field(r,'Filing year (verify)'))<2019).length;fillSelect('court',state.rows.map(r=>field(r,'Court level')));fillSelect('year',state.rows.map(r=>field(r,'Filing year (verify)')));update()}).catch(e=>{$('count').textContent='Could not load cases.';$('results').append(el('p','Upload index.html and cases.csv to the same hosted website folder. Opening the HTML directly from your computer may block CSV loading. Details: '+e.message,'error'))});
 </script></body></html>
