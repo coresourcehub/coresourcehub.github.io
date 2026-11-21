@@ -79,6 +79,9 @@ jobs:
       - name: Add consistent navigation to Policy Library pages
         run: python3 scripts/add_policy_navigation.py
 
+      - name: Add CDOC AR index and HB25-1013 references
+        run: python3 scripts/add_ar_index_references.py
+
       - name: Add seven uploaded illustrated card artworks
         env:
           GH_TOKEN: ${{ github.token }}
