@@ -61,3 +61,16 @@ The uploaded ZIP widget was used as the presentation starting point, then integr
 - Keyword chips on individual case cards are interactive and apply an exact keyword filter. The original text-based case search, year graph, source links and pagination remain available.
 - Counts are **calculated in the visitor's browser directly from `cases.csv` on each load**, so replacing the reviewed CSV and redeploying updates them. Topic alias mappings may need manual review when new terms are introduced.
 - All tags are labeled as **research topics, not judicial findings**. A medical or civil rights keyword is not evidence that a violation was legally established.
+
+## Court-record versus underlying-dispute reconciliation (November 21, 2026)
+
+The 75 items in `cases.csv` are distinct **court/docket records**, not an authoritative number of independent lawsuits or disputes. This distinction also applies to graphs and topic counts, which count indexed docket records (a lawsuit and its appeal can both be represented). The exact total of unique underlying disputes has **not** been established.
+
+`relationships.json` stores evidence-supported links without overwriting any case:
+- **One confirmed in-archive group:** Boles district case `1:19-cv-01158` and Tenth Circuit appeal `24-1444`, originating docket expressly documented in the appellate opinion. These contribute **two records from one underlying lawsuit**.
+- **Other appellate/removal proceedings linked from their archived district records:** earlier Boles appeals `19-1314` and `22-1086`; Fletcher appeal `22-1371` from `1:21-cv-02125`; Pittman appeal `22-1441` from `1:22-cv-02008`; Ruiz Denver state case `2020CV31723` removed to `1:20-cv-02643`; and a documented state-to-federal removal in Tafoya `1:20-cv-00768` (original state case number still unconfirmed). These outside proceedings are linked **without adding new rows to the 75**.
+- **Unconfirmed review candidates:** Crow 2020 versus 2021 federal filings; separate Eaves cases in 2023, 2025 and 2026; separate Vreeland cases in 2021 and 2026. Do not merge or classify as one dispute based only on litigant name, shared defendants or similar subject matter.
+
+Each relationship contains a source URL and a confidence/status label. Only `confirmed_groups` may collapse internally linked records for optional future **unique-dispute metrics**; even then, no definitive total is suitable until the remaining 73 ungrouped entries are checked. `review_watchlist` is for manual investigation, never automatic grouping. The website labels the relationship distinction and shows source-linked proceedings on individual research pages.
+
+Future data work should retain `court+docket` as the record identifier and optionally add a separately reviewed stable `underlying_dispute_id`. The relationship registry must be reviewed and updated with any imports. A filing, removal, appeal and related appeal should not automatically be represented as independent litigation events when measuring lawsuits; nonetheless all should remain searchable as court records.
