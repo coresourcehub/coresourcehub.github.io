@@ -17,9 +17,20 @@ a{color:var(--blue);text-underline-offset:2px}a:focus-visible,button:focus-visib
 .note{margin-top:22px;font-size:.85rem;color:var(--muted)}.error{border:1px solid #d88;background:#fff3f3;padding:16px;border-radius:12px}
 @media(max-width:740px){.controls{grid-template-columns:1fr}.case{padding:15px}}
 .hubhead{background:#112f46;color:#fff}.hubhead .wrap{max-width:1050px;margin:auto;padding:18px 16px;display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}.hubhead a{color:#f2f8fd}.hubhead strong{font-size:1.14rem}.hubhead nav{display:flex;flex-wrap:wrap;gap:16px;font-size:.9rem}.status{display:inline-block;border-radius:7px;padding:5px 9px;font-size:.75rem;font-weight:760;background:#e9f2f8;color:#315972;margin:4px 0 8px}.case .name a{text-decoration:none;color:#145e93}.case .name a:hover{text-decoration:underline}.case .name{line-height:1.33}.source-notice{background:#e9f2f8;border-left:4px solid #297cac;padding:14px 16px;border-radius:7px;margin-bottom:23px;color:#34546a}.linkrow{display:flex;align-items:center;flex-wrap:wrap;gap:16px;margin:10px 0}.cta{display:inline-block;border:1px solid #adc6d9;border-radius:8px;padding:9px 12px;font-weight:740;text-decoration:none}.footer{background:#112f46;color:#d0e2ed;padding:20px}.footer .wrap{max-width:1050px;margin:auto;padding:0 16px}.small{font-size:.86rem;color:#576b7b}@media(max-width:740px){.hubhead .wrap{align-items:flex-start;flex-direction:column}.hubhead nav{gap:12px}}
-</style>
+.overview{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0 22px}.metric{border:1px solid var(--edge);background:#fff;border-radius:14px;padding:17px;min-width:0}.metric strong{display:block;font-size:clamp(1.45rem,3vw,2rem);line-height:1.17;color:#183046}.metric span{display:block;color:#536174;font-size:.86rem;margin-top:7px}.year-graph{background:white;border:1px solid var(--edge);border-radius:16px;padding:20px;margin:0 0 23px}.year-graph h2{font-size:1.23rem;margin:0 0 6px}.year-graph p{font-size:.89rem;color:var(--muted);margin:0 0 14px}.bars{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));align-items:end;gap:9px;min-height:180px;border-bottom:1px solid #cbd8e3;padding:12px 1px 0}.bar{display:flex;flex-direction:column;align-items:center;justify-content:end;gap:5px;background:transparent;border:0;padding:0 2px;color:#375b74;cursor:pointer;font:inherit;min-width:0;min-height:165px}.bar .bar-value{font-size:.8rem;font-weight:740}.bar .bar-fill{width:min(100%,44px);min-height:4px;background:#2866a3;border-radius:7px 7px 0 0;transition:background .15s;display:block}.bar .bar-year{font-size:.83rem;font-weight:710;margin-bottom:7px}.bar:hover .bar-fill,.bar[aria-pressed="true"] .bar-fill{background:#c18a2e}.bar[aria-pressed="true"] .bar-year{color:#925f0a;text-decoration:underline}.chart-note{margin-top:13px!important}.clear-year{border:1px solid #bfd0dd;border-radius:8px;padding:7px 11px;background:white;color:#155f90;font-weight:730;cursor:pointer}.clear-year[hidden]{display:none!important}@media(max-width:740px){.overview{grid-template-columns:repeat(2,minmax(0,1fr))}.bars{gap:3px}.bar .bar-year{font-size:.74rem}.year-graph{padding:14px}.metric{padding:14px}}@media(max-width:370px){.bar .bar-year{font-size:.65rem}}@media(prefers-reduced-motion:reduce){.bar .bar-fill{transition:none}}</style>
 </head><body><header class="hubhead"><div class="wrap"><strong>CO Resource Hub</strong><nav aria-label="Site navigation"><a href="/">← Home</a><a href="/policy-library/">Policy Library</a><a href="/legislation/">Legislative Archive</a><a href="/facilities/">Facilities</a></nav></div></header><main>
 <header><h1>CDOC Litigation Archive</h1><p class="top">Search public case records by person, staff member, plaintiff, defendant, docket number, keyword, or court.</p><aside class="source-notice"><strong>Research beta · 47 initial case records (2019–2026).</strong> This is a discovery index, not an exhaustive litigation archive. Many summaries describe allegations or docket events, not judicial findings, and final dispositions frequently remain unverified. Verify all claims against court records before citing them.</aside></header>
+<section class="overview" aria-label="Litigation archive collection overview">
+<div class="metric"><strong id="stat-total">—</strong><span>Cases indexed</span></div>
+<div class="metric"><strong id="stat-years">—</strong><span>Filing years represented</span></div>
+<div class="metric"><strong id="stat-courts">—</strong><span>Court levels indexed</span></div>
+<div class="metric"><strong id="stat-sources">—</strong><span>Records with source links</span></div>
+</section>
+<section class="year-graph" aria-labelledby="filing-chart-heading"><h2 id="filing-chart-heading">Cases by filing year</h2>
+<p>Distribution of cases in this initial research sample, not all CDOC litigation. Tap or select a year to filter the directory.</p>
+<div id="year-bars" class="bars" role="group" aria-label="Filter cases by filing year"></div>
+<p class="chart-note"><button id="clear-chart-year" class="clear-year" type="button" hidden>Clear year filter</button></p>
+</section>
 <section class="controls" aria-label="Case filters">
 <div><label for="search">Search case, docket, person, or issue</label><input id="search" type="search" placeholder="Search case number, staff name, medical care, or issue…" autocomplete="off"></div>
 <div><label for="court">Court level</label><select id="court"><option value="">All courts</option></select></div>
@@ -32,6 +43,33 @@ a{color:var(--blue);text-underline-offset:2px}a:focus-visible,button:focus-visib
 'use strict';
 const $ = id => document.getElementById(id);
 const state = {rows:[], filtered:[], page:0, perPage:10};
+function updateDashboard(){
+const all=state.rows;
+const years=[...new Set(all.map(r=>field(r,'Filing year (verify)')).filter(v=>/^\\d{4}$/.test(v)))].sort();
+const courts=[...new Set(all.map(r=>field(r,'Court level')).filter(v=>v&&v!=='Attorney identified'))];
+$('stat-total').textContent=all.length;
+$('stat-years').textContent=years.length?years[0]+'–'+years[years.length-1]:'—';
+$('stat-courts').textContent=courts.length;
+$('stat-sources').textContent=all.filter(r=>/^https:\\/\\//i.test(field(r,'Public source URL'))).length;
+const counts=Object.fromEntries(years.map(y=>[y,all.filter(r=>field(r,'Filing year (verify)')===y).length]));
+const max=Math.max(1,...Object.values(counts));
+const target=$('year-bars');target.replaceChildren();
+target.style.gridTemplateColumns='repeat('+Math.max(years.length,1)+',minmax(0,1fr))';
+for(const year of years){
+const count=counts[year];
+const b=el('button',undefined,'bar');b.type='button';
+b.setAttribute('aria-label',year+': '+count+' indexed case'+(count===1?'':'s')+'. Filter by this year');
+b.setAttribute('aria-pressed',String($('year').value===year));
+const val=el('span',String(count),'bar-value');
+const fill=el('span',undefined,'bar-fill');fill.style.height=Math.max(4,Math.round(116*count/max))+'px';fill.setAttribute('aria-hidden','true');
+b.append(val,fill,el('span',year,'bar-year'));
+b.addEventListener('click',()=>{$('year').value=$('year').value===year?'':year;update()});
+target.append(b);
+}
+$('clear-chart-year').hidden=!$('year').value;
+}
+$('clear-chart-year').addEventListener('click',()=>{$('year').value='';update()});
+
 // CSV parser supporting RFC-style quoted fields, commas, and multiline text.
 function parseCSV(csv){const output=[];let row=[], cell='', q=false;csv=csv.replace(/^\uFEFF/,'');for(let i=0;i<csv.length;i++){const c=csv[i];if(q){if(c==='"'&&csv[i+1]==='"'){cell+='"';i++}else if(c==='"'){q=false}else cell+=c}else if(c==='"'){q=true}else if(c===','){row.push(cell);cell=''}else if(c==='\n'||c==='\r'){if(c==='\r'&&csv[i+1]==='\n')i++;row.push(cell);if(row.some(v=>v!==''))output.push(row);row=[];cell=''}else cell+=c}row.push(cell);if(row.some(v=>v!==''))output.push(row);const headers=output.shift()||[];return output.map(r=>Object.fromEntries(headers.map((h,i)=>[h,r[i]||''])))}
 function field(r,key){return (r[key]||'').trim()}
@@ -46,7 +84,7 @@ const people=field(r,'Named persons / entities (search index)');if(people)card.a
 
 const stage=field(r,'Review stage');if(stage){card.append(el('span','Review: '+stage,'status'))};const level=field(r,'Summary evidence level');if(level)card.append(el('p','Evidence basis: '+level,'subtle'));
 const links=el('div',undefined,'linkrow');links.append(Object.assign(el('a','Open case research record','cta'),{href:detailUrl(r)}));const link=field(r,'Public source URL');if(/^https:\/\//i.test(link)){const a=el('a','View original court source ↗');a.href=link;a.target='_blank';a.rel='noopener noreferrer';links.append(a)}card.append(links);return card}
-function update(){const term=$('search').value.toLocaleLowerCase().trim();const court=$('court').value;const year=$('year').value;state.filtered=state.rows.filter(r=>{if(court&&field(r,'Court level')!==court)return false;if(year&&field(r,'Filing year (verify)')!==year)return false;return !term||Object.values(r).some(v=>String(v).toLocaleLowerCase().includes(term))});state.page=0;render()}
+function update(){const term=$('search').value.toLocaleLowerCase().trim();const court=$('court').value;const year=$('year').value;state.filtered=state.rows.filter(r=>{if(court&&field(r,'Court level')!==court)return false;if(year&&field(r,'Filing year (verify)')!==year)return false;return !term||Object.values(r).some(v=>String(v).toLocaleLowerCase().includes(term))});state.page=0;render();updateDashboard()}
 function render(){const rows=state.filtered,total=rows.length,start=state.page*state.perPage;const end=Math.min(start+state.perPage,total);$('count').textContent=total+' matching case'+(total===1?'':'s')+' · '+state.rows.length+' total records';$('results').replaceChildren();rows.slice(start,end).forEach(r=>$('results').append(renderCard(r)));if(!total)$('results').append(el('p','No matching cases. Try a different name, docket number, or keyword.'));$('pages').textContent=total?'Showing '+(start+1)+'–'+end+' of '+total:'';$('prev').disabled=state.page===0;$('next').disabled=end>=total}
 function fillSelect(id,values){const select=$(id);[...new Set(values.filter(v=>Boolean(v)&&!(id==='court'&&v==='Attorney identified')))].sort((a,b)=>id==='year'?b.localeCompare(a):a.localeCompare(b)).forEach(v=>{const o=el('option',v);o.value=v;select.append(o)})}
 $('search').addEventListener('input',update);$('court').addEventListener('change',update);$('year').addEventListener('change',update);
