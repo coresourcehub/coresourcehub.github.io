@@ -28,6 +28,11 @@ jobs:
       - name: Check out the homepage
         uses: actions/checkout@v4
 
+      - name: Validate litigation source data and related proceedings
+        run: |
+          set -euo pipefail
+          python3 scripts/check-litigation-publication.py
+
       - name: Create deployment site
         run: |
           set -euo pipefail
