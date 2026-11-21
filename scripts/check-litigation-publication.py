@@ -56,7 +56,7 @@ for n, r in enumerate(rows, 2):
     key_counts[(court, docket)] += 1
     docket_lookup.setdefault(docket, []).append(r)
     year = (r.get("Filing year (verify)") or "").strip()
-    if not re.fullmatch(r"(19|20)\\d{2}", year):
+    if not re.fullmatch(r"(19|20)\d{2}", year):
         warning(f"CSV row {n}: unverified/malformed filing year {year!r}")
     if not https_url((r.get("Public source URL") or "").strip()):
         error(f"CSV row {n}: missing or invalid HTTPS source URL")
