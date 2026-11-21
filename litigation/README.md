@@ -1,6 +1,18 @@
 # CDOC Litigation Archive — Data and source review process
 
-This archive uses the initial 47-record `litigation/cases.csv` supplied by the project researcher, covering filing years 2019–2026. The searchable directory is at `/litigation/` and individual records use `/litigation/case.html?docket=...&court=...`. These deep links resolve a **docket plus court** pair against the current CSV; they are not a permanent case-specific static HTML file. Keeping the same docket and court in future imports preserves the link.
+## November 2026 expansion — 75 records and executive leadership context
+
+- The 75-record user-supplied CSV and workbook were reconciled to the previous 47-record dataset by **court + docket number**. All 47 earlier records were retained and 28 new records added. Previously enriched keywords and relevant research notes were merged conservatively to avoid discarding the project's work.
+- The master CSV covers **2018–2026**, with **two** pre-2019 records. The default directory view filters to **2019–present**; a clearly labeled checkbox allows users to include and search historical cases. The filing-year chart, keyword counts and overview are computed from the selected period while the homepage card states the full 75-record coverage.
+- A source-linked, three-entry **Executive Leadership Timeline** is stored separately in `litigation/leadership.json`: Dean Williams (2019–2022); Moses “Andre” Stancil, interim (Dec 2022–Jan 2023); and Stancil, permanent (Jan 31, 2023–present, checked November 2026). Dates of appointment/announcement may precede the start of service. Leadership roles do not imply culpability in contemporaneous lawsuits.
+- For copyright reasons, leadership portraits **are not embedded** until an explicit reusable license or permission is obtained. The website shows labeled image placeholders and clickable links to credited source photographs. Stock, screenshot crops, and unlicensed editorial photos should not be uploaded as if cleared.
+- A published court order in Gambrell, 1:24-cv-01853, identifies **Jason Guidry** as interim Chief of Behavioral Health. The user supplied an alternate `Jason Goudry` spelling from a screenshot, but identity equivalence is **unverified**. Search can discover that research note; do not treat the two spellings as a confirmed merged alias.
+- Workbook **Expansion Notes** preserved here: earlier index 47; new records 28; expanded 75; 2 records pre-2019. Filing year differs from alleged-event year. Appeals/removals may track the same dispute; do not count 75 records as 75 unique underlying disputes. The sample includes civil-rights, habeas, state appeals, federal appeals, administrative and other actions. Verify allegations, filing dates, identities and dispositions against primary sources before making substantive assertions.
+- Future imports should replace/reconcile `litigation/cases.csv` rather than append blindly. Keep the existing static Pages workflow; CourtListener discovery, if added, must propose staged updates for human review and never auto-publish.
+
+
+
+This archive uses the expanded 75-record `litigation/cases.csv` supplied by the project researcher, covering filing years 2018–2026. The searchable directory is at `/litigation/` and individual records use `/litigation/case.html?docket=...&court=...`. These deep links resolve a **docket plus court** pair against the current CSV; they are not a permanent case-specific static HTML file. Keeping the same docket and court in future imports preserves the link.
 
 ## Updating the archive
 
