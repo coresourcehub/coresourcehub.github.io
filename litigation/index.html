@@ -45,12 +45,12 @@ const $ = id => document.getElementById(id);
 const state = {rows:[], filtered:[], page:0, perPage:10};
 function updateDashboard(){
 const all=state.rows;
-const years=[...new Set(all.map(r=>field(r,'Filing year (verify)')).filter(v=>/^\\d{4}$/.test(v)))].sort();
+const years=[...new Set(all.map(r=>field(r,'Filing year (verify)')).filter(v=>/^\d{4}$/.test(v)))].sort();
 const courts=[...new Set(all.map(r=>field(r,'Court level')).filter(v=>v&&v!=='Attorney identified'))];
 $('stat-total').textContent=all.length;
 $('stat-years').textContent=years.length?years[0]+'–'+years[years.length-1]:'—';
 $('stat-courts').textContent=courts.length;
-$('stat-sources').textContent=all.filter(r=>/^https:\\/\\//i.test(field(r,'Public source URL'))).length;
+$('stat-sources').textContent=all.filter(r=>/^https:\/\//i.test(field(r,'Public source URL'))).length;
 const counts=Object.fromEntries(years.map(y=>[y,all.filter(r=>field(r,'Filing year (verify)')===y).length]));
 const max=Math.max(1,...Object.values(counts));
 const target=$('year-bars');target.replaceChildren();
